@@ -12,6 +12,8 @@ public class Program
         var tasks = new TaskGroup("Root");
         var taskGroup1 = new TaskGroup("Grupa pierwsza");
         var taskGroup2 = new TaskGroup("Grupa druga");
+        var optask1 = new Task("3A - Restrukturyzacja projektu", new DateTime(2024, 12, 23), new DateTime(2025, 1, 11));
+        var optask2 = new Task("3B - Przerwa", new DateTime(2000, 11, 1), new DateTime(3000, 11, 30));
         // Lista zadań (przykładowa organizacja wyłącznie według nazw)
         taskGroup1.AddTask(task1);
         taskGroup1.AddTask(task2);
@@ -19,6 +21,10 @@ public class Program
         taskGroup2.AddTask(task4);
         tasks.AddTask(taskGroup1);
         tasks.AddTask(taskGroup2);
+        var optTask = new OptionalTaskGroup("Grupa trzecia");
+        optTask.AddTask(optask1);
+        optTask.AddTask(optask2);
+        tasks.AddTask(optTask);
 
         // Oznaczanie przykładowych zadań jako wykonane (z różnymi datami ukończenia)
         task1.MarkAsCompleted(new DateTime(2024, 10, 25)); // Wykonane na czas
@@ -26,23 +32,13 @@ public class Program
         // task3 i task4 są jeszcze niewykonane
 
         // Wyświetlanie listy zadań i ich statusów
+        optTask.MarkAsCompleted(DateTime.Now);
+        optTask.MarkAsCompleted(DateTime.Now);
         Console.WriteLine("Lista zadań:");
 
         Console.WriteLine(tasks);
 
         Console.WriteLine(tasks.GenerateRaport());
 
-
-        // Zliczanie wykonanych, opóźnionych i oczekujących zadań
-        // int completedOnTime = tasks.Count(t => t.IsCompleted && !t.IsLate);
-        // int completedLate = tasks.Count(t => t.IsCompleted && t.IsLate);
-        // int pending = tasks.Count(t => !t.IsCompleted);
-        // int pendingLate = tasks.Count(t => !t.IsCompleted && DateTime.Now > t.EndDate);
-
-        // Console.WriteLine("\nPodsumowanie zadań:");
-        // Console.WriteLine($"Zadania wykonane na czas: {completedOnTime}");
-        // Console.WriteLine($"Zadania wykonane z opóźnieniem: {completedLate}");
-        // Console.WriteLine($"Zadania oczekujące: {pending}");
-        // Console.WriteLine($"Zadania oczekujące z przekroczonym terminem: {pendingLate}");
     }
 }

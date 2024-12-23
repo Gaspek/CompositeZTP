@@ -20,7 +20,7 @@ namespace CompositeZTP
         public DateTime StartDate => _tasks.Min(task => task.StartDate);
         // Data zakończenia: najpóźniejsza wśród wszystkich komponentów
         public DateTime EndDate => _tasks.Max(task => task.EndDate);
-        public bool IsCompleted => _tasks.All(task => task.IsCompleted);
+        public virtual bool IsCompleted => _tasks.All(task => task.IsCompleted);
         public bool IsLate => _tasks.Any(task => task.IsLate);
 
         public void AddTask(ITaskComponent task)
@@ -31,7 +31,7 @@ namespace CompositeZTP
         {
             _tasks.Remove(task);
         }
-        public void MarkAsCompleted(DateTime completionDate)
+        public virtual void MarkAsCompleted(DateTime completionDate)
         {
             _tasks.ForEach(task =>
             {
@@ -53,7 +53,7 @@ namespace CompositeZTP
         {
             return ToString(0);
         }
-        private string ToString(int indentLevel)
+        public string ToString(int indentLevel)
         {
             // Wcięcie dla bieżącej grupy
             string indent = new string(' ', indentLevel * 2);
