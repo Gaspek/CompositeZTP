@@ -78,5 +78,45 @@ namespace CompositeZTP
 
             return result.ToString();
         }
+
+        public string GenerateRaport()
+        {
+            int completedTasks = 0, completedLate = 0, pending = 0, pendingLate = 0;
+
+            // Stos do eksploracji zadań
+            var stack = new Stack<ITaskComponent>(_tasks);
+
+            while (stack.Count > 0)
+            {
+                var currentTask = stack.Pop();
+
+                if (currentTask.IsCompleted)
+                {
+                    if (!currentTask.IsLate) completedTasks++;
+                    if (currentTask.IsLate) completedLate++;
+                }
+                else
+                {
+                    pending++;
+                    if (DateTime.Now > currentTask.EndDate) pendingLate++;
+                }
+
+                // Jeśli to grupa, dodajemy jej zadania do stosu
+                if (currentTask is TaskGroup group)
+                {
+                    foreach (var task in group._tasks)
+                    {
+                        stack.Push(task);
+                    }
+                }
+            }
+
+            return $"Zadania wykonane na czas: {completedTasks}\n" +
+                   $"Zadania wykonane z opóźnieniem: {completedLate}\n" +
+                   $"Zadania oczekujące: {pending}\n" +
+                   $"Zadania oczekujące z przekroczonym terminem: {pendingLate}\n";
+        }
+
+
     }
 }

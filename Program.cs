@@ -10,8 +10,8 @@ public class Program
         var task3 = new Task("2A - Projektowanie schematu bazy danych", new DateTime(2024, 10, 28), new DateTime(2024, 11, 3));
         var task4 = new Task("2B - Tworzenie zapytań SQL", new DateTime(2024, 11, 1), new DateTime(2024, 11, 30));
         var tasks = new TaskGroup("Root");
-        var taskGroup1 = new TaskGroup("1");
-        var taskGroup2 = new TaskGroup("2");
+        var taskGroup1 = new TaskGroup("Grupa pierwsza");
+        var taskGroup2 = new TaskGroup("Grupa druga");
         // Lista zadań (przykładowa organizacja wyłącznie według nazw)
         taskGroup1.AddTask(task1);
         taskGroup1.AddTask(task2);
@@ -29,7 +29,9 @@ public class Program
         Console.WriteLine("Lista zadań:");
 
         Console.WriteLine(tasks);
-        
+
+        Console.WriteLine(tasks.GenerateRaport());
+
 
         // Zliczanie wykonanych, opóźnionych i oczekujących zadań
         // int completedOnTime = tasks.Count(t => t.IsCompleted && !t.IsLate);
