@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -117,6 +118,45 @@ namespace CompositeZTP
                    $"Zadania oczekujące z przekroczonym terminem: {pendingLate}\n";
         }
 
+        public string GenerateGanttChart() 
+        {
+            var que = new Queue<ITaskComponent>(_tasks);
+            DateTime projectStart = _tasks.Min(task => task.StartDate);
+            DateTime projectEnd = _tasks.Max(task => task.EndDate);
+            StringBuilder result = new StringBuilder();
+            while (que.Count() > 0)
+            {
+                var currentTask = que.Dequeue();
+                if (currentTask is TaskGroup group)
+                {
+                    foreach (var task in group._tasks)
+                    {
+                        que.Enqueue(task);
+                    }
+                    continue;
+                }
 
+                if (currentTask.IsCompleted && currentTask.IsLate)
+                {
+                    result.Append($"{currentTask.Name}:\n  {new string('-', (int)(currentTask.StartDate - projectStart).TotalDays)}");
+                    result.Append($"{new string('!', (int)(currentTask.EndDate - currentTask.StartDate).TotalDays)}");
+                    result.Append($"{new string('-', (int)(projectEnd - currentTask.EndDate).TotalDays)}\n");
+                }
+                else if (currentTask.IsCompleted)
+                {
+                    result.Append($"{currentTask.Name}:\n  {new string('-', (int)(currentTask.StartDate - projectStart).TotalDays)}");
+                    result.Append($"{new string('X', (int)(currentTask.EndDate - currentTask.StartDate).TotalDays)}");
+                    result.Append($"{new string('-', (int)(projectEnd - currentTask.EndDate).TotalDays)}\n");
+                }
+                else
+                {
+                    result.Append($"{currentTask.Name}:\n  {new string('-', (int)(currentTask.StartDate - projectStart).TotalDays)}");
+                    result.Append($"{new string('#', (int)(projectEnd - currentTask.StartDate).TotalDays)}\n");
+                }
+
+            }
+            return result.ToString();
+        }
+            
     }
 }

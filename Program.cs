@@ -13,7 +13,7 @@ public class Program
         var taskGroup1 = new TaskGroup("Grupa pierwsza");
         var taskGroup2 = new TaskGroup("Grupa druga");
         var optask1 = new Task("3A - Restrukturyzacja projektu", new DateTime(2024, 12, 23), new DateTime(2025, 1, 11));
-        var optask2 = new Task("3B - Przerwa", new DateTime(2000, 11, 1), new DateTime(3000, 11, 30));
+        var optask2 = new Task("3B - Przerwa", new DateTime(2025, 1, 1), new DateTime(2025, 1, 15));
         // Lista zadań (przykładowa organizacja wyłącznie według nazw)
         taskGroup1.AddTask(task1);
         taskGroup1.AddTask(task2);
@@ -39,6 +39,9 @@ public class Program
         Console.WriteLine(tasks);
 
         Console.WriteLine(tasks.GenerateRaport());
+
+        Console.WriteLine(tasks.GenerateGanttChart());
+
 
     }
 }
